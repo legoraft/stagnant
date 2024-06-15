@@ -5,7 +5,7 @@ mod parser;
 pub struct Frontmatter {
     pub title: String,
     pub date: String,
-    pub tags: Vec<String>,
+    pub tags: String,
 }
 
 pub fn parse_frontmatter(file: &str) -> Frontmatter {
