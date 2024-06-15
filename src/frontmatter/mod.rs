@@ -8,6 +8,12 @@ pub struct Frontmatter {
     tags: Vec<String>,
 }
 
-pub fn parse_frontmatter(file: &str) {
-    parse(file);
+pub fn parse_frontmatter(file: &str) -> Frontmatter {
+    let (title, date, tags) = parse(file);
+    
+    Frontmatter {
+        title,
+        date,
+        tags,
+    }
 }
