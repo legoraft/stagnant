@@ -1,10 +1,10 @@
-use std::{env::current_dir, fs, path::Path};
+use std::{env::current_dir, fs::{self, ReadDir}, path::Path};
 
 use posts::write_posts;
 
 mod posts;
 
-pub fn generate() {
+pub fn generate(posts: ReadDir, template: String) {
     if !Path::new("./site/posts").exists() {
         fs::create_dir("./site/posts/").expect("Couldn't create posts directory!")
     };
