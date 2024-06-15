@@ -30,5 +30,5 @@ fn parse_markdown(file: String) -> String {
     let mut html_output = String::new();
     pulldown_cmark::html::push_html(&mut html_output, parser);
     
-    html_output
+    html_output.replace(".md", ".html")
 }
