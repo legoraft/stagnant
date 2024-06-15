@@ -1,6 +1,7 @@
 use std::{fs, path::Path};
 
 mod post_generator;
+mod frontmatter;
 
 pub fn generator() {
     let posts = fs::read_dir("./posts").expect("Couldn't find post directory!");
