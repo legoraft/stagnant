@@ -1,4 +1,4 @@
-use std::{env::current_dir, fs::{self, ReadDir}, path::Path};
+use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::Path};
 
 mod post_generator;
 mod frontmatter;
@@ -17,16 +17,17 @@ pub fn generator() {
 }
 
 fn write_index(template: String) {
-    let posts = fs::read_dir("./site/posts").expect("Posts haven't compiled!");
+    set_current_dir(current_dir().unwrap().parent().unwrap()).expect("Couldn't move to working directory.");
+    let posts = fs::read_dir("./posts").expect("Posts haven't compiled!");
     let mut post_list: String = String::new();
     
     for post in posts {
         let path = post.unwrap().path();
         let filename = path.file_stem().unwrap().to_str().unwrap();
-        let link = ["<li><a href=\"", filename, ".html\">", filename, "</a></li>\n"].concat();
+        let link = ["<li><a href=\"./posts/", filename, ".html\">", filename, "</a></li>\n"].concat();
         post_list.push_str(link.as_str());
     }
     
     let index = template.replace("{links}", &post_list);
-    fs::write("./site/index.html", index).expect("Couldn't write index file!");
+    fs::write("./index.html", index).expect("Couldn't write index file!");
 }
