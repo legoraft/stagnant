@@ -28,7 +28,7 @@ fn parse_markdown(file: &str) -> String {
     let mut options = Options::empty();
     options.insert(Options::ENABLE_YAML_STYLE_METADATA_BLOCKS);
     
-    let parser = pulldown_cmark::Parser::new_ext(file.as_str(), options);
+    let parser = pulldown_cmark::Parser::new_ext(file, options);
 
     let mut html_output = String::new();
     pulldown_cmark::html::push_html(&mut html_output, parser);
