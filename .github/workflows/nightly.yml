@@ -14,13 +14,11 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Build release
-      run: |
-        cargo build --release
-        ls -a
+      run: cargo build --release
     - name: Update release
       uses: pyTooling/Actions/releaser@r0
       with:
         tag: nightly
         rm: true
         token: ${{ secrets.GITHUB_TOKEN }}
-        files: target/release/stagnant
+        files: ./target/release/stagnant
