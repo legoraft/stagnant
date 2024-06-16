@@ -13,6 +13,7 @@ pub fn generator() {
     let posts = fs::read_dir("./posts").expect("Couldn't find post directory!");
     let posts_template = fs::read_to_string("./site/posts/[id].html").expect("Post template doesn't exist.");
     let index_template = fs::read_to_string("./site/index.html").expect("Index template doesn't exist.");
+    fs::remove_file("./site/posts/[id].html").expect("Couldn't delete post template!");
     
     post_generator::generate(posts, posts_template);
     write_index(index_template);
