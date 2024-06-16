@@ -2,18 +2,18 @@ use std::{fs, io, path::Path};
 
 fn copy_directory(source: &Path, destination: &Path) -> io::Result<()> {
     if !destination.exists() {
-        fs::create_dir_all(destination).unwrap();
+        fs::create_dir_all(destination)?;
     }
     
-    for entry_result in fs::read_dir(source).unwrap() {
-        let entry = entry_result.unwrap();
+    for entry_result in fs::read_dir(source)? {
+        let entry = entry_result?;
         let source_path = entry.path();
         let destination_path = destination.join(entry.file_name());
         
         if source_path.is_dir() {
-            copy_directory(&source_path, &destination_path).unwrap();
+            copy_directory(&source_path, &destination_path)?;
         } else if source_path.is_file() {
-            fs::copy(&source_path, &destination_path).unwrap();
+            fs::copy(&source_path, &destination_path)?;
         }
     }
     
@@ -24,7 +24,7 @@ fn copy_directory(source: &Path, destination: &Path) -> io::Result<()> {
 mod tests {
     use fs::File;
     use tempfile::tempdir;
-    use std::io::{self, Write};
+    use std::io::Write;
 
     use super::*;
     
