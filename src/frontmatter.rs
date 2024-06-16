@@ -1,5 +1,6 @@
 use gray_matter::{engine::YAML, Matter};
 
+#[derive(Debug, PartialEq, Eq)]
 pub struct Frontmatter {
     pub title: String,
     pub description: String,
@@ -28,6 +29,21 @@ mod tests {
     
     #[test]
     fn test_frontmatter() {
+        let file: String = "\
+---
+title: Test post
+date: 2023-06-16
+description: A fake test post to have as a test case.
+---
+
+This is where te body of the post would go normally.".to_string();
         
+        let frontmatter = Frontmatter {
+            title: "Test post".to_string(),
+            description: "A fake test post to have as a test case.".to_string(),
+            date: "2023-06-16".to_string(),
+        };
+        
+        assert_eq!(frontmatter, parse(file));
     }
 }
