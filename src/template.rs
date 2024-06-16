@@ -1,6 +1,6 @@
 use std::{fs, io, path::Path};
 
-fn copy_directory(source: &Path, destination: &Path) -> io::Result<()> {
+pub fn copy_directory(source: &Path, destination: &Path) -> io::Result<()> {
     if !destination.exists() {
         fs::create_dir_all(destination)?;
     }

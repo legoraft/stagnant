@@ -5,13 +5,14 @@ mod frontmatter;
 mod template;
 
 pub fn generator() {
+    let template_path = Path::new("./template");
+    let site_path = Path::new("./site");
+    
+    template::copy_directory(template_path, site_path).expect("Couldn't copy template!");
+    
     let posts = fs::read_dir("./posts").expect("Couldn't find post directory!");
-    let posts_template = fs::read_to_string("./template/posts/[id].html").expect("Post template doesn't exist.");
-    let index_template = fs::read_to_string("./template/index.html").expect("Index template doesn't exist.");
-
-    if !Path::new("./site").exists() {
-        fs::create_dir("./site").expect("Couldn't create site directory!");
-    }
+    let posts_template = fs::read_to_string("./site/posts/[id].html").expect("Post template doesn't exist.");
+    let index_template = fs::read_to_string("./site/index.html").expect("Index template doesn't exist.");
     
     post_generator::generate(posts, posts_template);
     write_index(index_template);
