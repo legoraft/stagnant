@@ -1,0 +1,38 @@
+name: Rust
+
+on: workflow_dispatch
+
+jobs:
+  build:
+    name: ${{ matrix.platform.os_name }}
+    runs-on: ${{ matrix.platform.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - os_name: Linux-x86_64
+            os: ubuntu-latest
+            target: x86_64-unknown-linux-gnu
+            bin: stagnant-x86_64-linux
+          - os_name: Macos-arm
+            os: macOS-latest
+            target: aarch64-apple-darwin
+            bin: stagnant-arm-macos
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Build
+      uses: houseabsolute/actions-rust-cross@v0
+      with:
+        command: "build"
+        target: ${{ matrix.platform.target }}
+        args: "--release"
+        strip: true
+    - name: Rename binaries
+        run: mv target/${{ matrix.platform.target }}/release/stagnant target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: stagnant-releases
+        path: |
+          target/${{ matrix.platform.target }}/release/${{ matrix.platform.bin }}
