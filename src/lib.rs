@@ -1,6 +1,6 @@
 use std::{env::{current_dir, set_current_dir}, fs, path::Path};
 
-mod post_generator;
+mod posts;
 mod frontmatter;
 mod template;
 
@@ -15,7 +15,7 @@ pub fn generator() {
     let index_template = fs::read_to_string("./site/index.html").expect("Index template doesn't exist.");
     fs::remove_file("./site/posts/[id].html").expect("Couldn't delete post template!");
     
-    post_generator::generate(posts, posts_template);
+    posts::generate(posts, posts_template);
     write_index(index_template);
 }
 

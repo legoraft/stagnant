@@ -1,10 +1,21 @@
-use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::PathBuf};
+use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::{Path, PathBuf}};
 
 use pulldown_cmark::Options;
 
-use crate::frontmatter::parse_frontmatter;
+use crate::frontmatter::parse;
 
-pub fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_posts_dir: String) {
+pub fn generate(posts: ReadDir, template: String) {
+    if !Path::new("./site/posts").exists() {
+        fs::create_dir("./site/posts/").expect("Couldn't create posts directory!")
+    };
+    
+    let working_dir = current_dir().expect("Working directory is nonexistent.");
+    let site_posts_dir = [working_dir.to_str().unwrap(), "/site/posts"].concat();
+    
+    write_posts(posts, template, working_dir, site_posts_dir);
+}
+
+fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_posts_dir: String) {
     for post in posts {
         if current_dir().unwrap() == PathBuf::from(&site_posts_dir) {
             set_current_dir(&working_dir).expect("Couldn't move to working directory.");
@@ -13,12 +24,13 @@ pub fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_
         let path = post.expect("Couldn't get post file path!").path();
         let file = fs::read_to_string(&path).expect("Couldn't read markdown file!");
         let content = parse_markdown(&file);
-        let data = parse_frontmatter(&file);
+        let data = parse(file);
+        
         let html = template
             .replace("{content}", &content)
-            .replace("{title}", data.title.as_str())
+            .replace("{description}", data.description.as_str())
             .replace("{date}", data.date.as_str())
-            .replace("{tags}", data.tags.as_str());
+            .replace("{title}", data.title.as_str());
 
         let filename = path.file_stem().unwrap();
         let output_file = [filename.to_str().unwrap(), ".html"].concat();
