@@ -1,21 +1,10 @@
-use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::Path};
+use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::PathBuf};
 
 use pulldown_cmark::Options;
 
 use crate::frontmatter::parse;
 
-pub fn generate(posts: ReadDir, template: String) {
-    if !Path::new("./site/posts").exists() {
-        fs::create_dir("./site/posts/").expect("Couldn't create posts directory!")
-    };
-    
-    let working_dir = current_dir().expect("Working directory is nonexistent.");
-    let site_posts_dir = [working_dir.to_str().unwrap(), "/site/posts"].concat();
-    
-    write_posts(posts, template, working_dir, site_posts_dir);
-}
-
-fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_posts_dir: String) {
+pub fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_posts_dir: String) {
     for post in posts {
         if current_dir().unwrap() == PathBuf::from(&site_posts_dir) {
             set_current_dir(&working_dir).expect("Couldn't move to working directory.");
