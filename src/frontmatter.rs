@@ -21,3 +21,13 @@ pub fn parse(file: String) -> Frontmatter {
         date
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn test_frontmatter() {
+        
+    }
+}
