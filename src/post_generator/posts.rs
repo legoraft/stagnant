@@ -15,21 +15,11 @@ pub fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_
         let content = parse_markdown(&file);
         let data = parse(file);
         
-        let mut html: String = template.clone();
-        
-        if data.title.is_some() {
-            html = html.replace("{title}", data.title.unwrap().as_str());
-        }
-        
-        if data.date.is_some() {
-            html = html.replace("{date}", data.date.unwrap().as_str());
-        }
-        
-        if data.description.is_some() {
-            html = html.replace("{title}", data.description.unwrap().as_str());
-        }
-        
-        let html = html.replace("{content}", &content);
+        let html = template
+            .replace("{content}", &content)
+            .replace("{description}", data.description.as_str())
+            .replace("{date}", data.date.as_str())
+            .replace("{title}", data.title.as_str());
 
         let filename = path.file_stem().unwrap();
         let output_file = [filename.to_str().unwrap(), ".html"].concat();

@@ -4,29 +4,29 @@ use gray_matter::{engine::YAML, Matter, ParsedEntity};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Frontmatter {
-    pub title: Option<String>,
-    pub description: Option<String>,
-    pub date: Option<String>,
+    pub title: String,
+    pub description: String,
+    pub date: String,
 }
 
 pub fn parse(file: String) -> Frontmatter {
     let matter = Matter::<YAML>::new();
     let frontmatter_result = matter.parse(&file);
     
-    let title: Option<String> = Some(frontmatter_result.data
+    let title: String = frontmatter_result.data
         .as_ref()
         .unwrap()["title"]
-        .as_string().expect("Couldn't parse title"));
+        .as_string().expect("Couldn't parse title");
     
-    let description: Option<String> = Some(frontmatter_result.data
+    let description: String = frontmatter_result.data
         .as_ref()
         .unwrap()["description"]
-        .as_string().expect("Couldn't parse description"));
+        .as_string().expect("Couldn't parse description");
     
-    let date: Option<String> = Some(frontmatter_result.data
+    let date: String = frontmatter_result.data
         .as_ref()
         .unwrap()["date"]
-        .as_string().expect("Couldn't parse date"));
+        .as_string().expect("Couldn't parse date");
     
     Frontmatter {
         title,
