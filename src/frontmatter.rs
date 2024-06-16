@@ -1,6 +1,6 @@
 use gray_matter::{engine::YAML, Matter};
 
-struct Frontmatter {
+pub struct Frontmatter {
     pub title: String,
     pub description: String,
     pub date: String,

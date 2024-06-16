@@ -13,12 +13,12 @@ pub fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_
         let path = post.expect("Couldn't get post file path!").path();
         let file = fs::read_to_string(&path).expect("Couldn't read markdown file!");
         let content = parse_markdown(&file);
-        let data = parse(&file);
+        let data = parse(file);
         let html = template
             .replace("{content}", &content)
             .replace("{title}", data.title.as_str())
             .replace("{date}", data.date.as_str())
-            .replace("{tags}", data.tags.as_str());
+            .replace("{description}", data.description.as_str());
 
         let filename = path.file_stem().unwrap();
         let output_file = [filename.to_str().unwrap(), ".html"].concat();
