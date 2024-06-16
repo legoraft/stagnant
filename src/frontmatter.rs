@@ -1,4 +1,6 @@
-use gray_matter::{engine::YAML, Matter};
+use std::collections::hash_map::Values;
+
+use gray_matter::{engine::YAML, Matter, ParsedEntity};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Frontmatter {
@@ -10,11 +12,21 @@ pub struct Frontmatter {
 pub fn parse(file: String) -> Frontmatter {
     let matter = Matter::<YAML>::new();
     let frontmatter_result = matter.parse(&file);
-    let frontmatter = frontmatter_result.data.as_ref().unwrap();
     
-    let title: Option<String> = Some(frontmatter["title"].as_string().unwrap_or_default());
-    let description: Option<String> = Some(frontmatter["description"].as_string().unwrap_or_default());
-    let date: Option<String> = Some(frontmatter["date"].as_string().unwrap_or_default());
+    let title: Option<String> = Some(frontmatter_result.data
+        .as_ref()
+        .unwrap()["title"]
+        .as_string().expect("Couldn't parse title"));
+    
+    let description: Option<String> = Some(frontmatter_result.data
+        .as_ref()
+        .unwrap()["description"]
+        .as_string().expect("Couldn't parse description"));
+    
+    let date: Option<String> = Some(frontmatter_result.data
+        .as_ref()
+        .unwrap()["date"]
+        .as_string().expect("Couldn't parse date"));
     
     Frontmatter {
         title,
