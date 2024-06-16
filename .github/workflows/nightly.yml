@@ -10,15 +10,16 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
     - uses: actions/checkout@v4
     - name: Build release
       run: cargo build --release
     - name: Update release
-      uses: pyTooling/Actions/releaser@r0
+      uses: softprops/action-gh-release@v2
       with:
-        tag: nightly
+        tag_name: nightly
         rm: true
-        token: ${{ secrets.GITHUB_TOKEN }}
         files: ./target/release/stagnant
