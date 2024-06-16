@@ -2,6 +2,7 @@ use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::Path};
 
 mod post_generator;
 mod frontmatter;
+mod template;
 
 pub fn generator() {
     let posts = fs::read_dir("./posts").expect("Couldn't find post directory!");
