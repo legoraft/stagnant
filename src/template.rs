@@ -33,6 +33,7 @@ mod tests {
         let temp_source = tempdir().unwrap();
         let temp_destination = tempdir().unwrap();
         
+        fs::create_dir(temp_source.path().join("subdir")).unwrap();
         let top_path = temp_source.path().join("top_file.txt");
         let sub_path = temp_source.path().join("./subdir/sub_file.txt");
 
@@ -45,5 +46,10 @@ mod tests {
         
         assert!(temp_destination.path().join("top_file.txt").exists());
         assert!(temp_destination.path().join("subdir/sub_file.txt").exists());
+        
+        let top_content = fs::read_to_string(temp_destination.path().join("top_file.txt")).unwrap();
+        let sub_content = fs::read_to_string(temp_destination.path().join("subdir/sub_file.txt")).unwrap();
+        assert_eq!(top_content, "Hello, world!\n");
+        assert_eq!(sub_content, "Hello, again!\n");
     }
 }
