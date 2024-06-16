@@ -1,6 +1,4 @@
-use std::collections::hash_map::Values;
-
-use gray_matter::{engine::YAML, Matter, ParsedEntity};
+use gray_matter::{engine::YAML, Matter};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Frontmatter {
@@ -51,9 +49,9 @@ description: A fake test post to have as a test case.
 This is where te body of the post would go normally.".to_string();
         
         let frontmatter = Frontmatter {
-            title: Some("Test post".to_string()),
-            description: Some("A fake test post to have as a test case.".to_string()),
-            date: Some("2023-06-16".to_string()),
+            title: "Test post".to_string(),
+            description: "A fake test post to have as a test case.".to_string(),
+            date: "2023-06-16".to_string(),
         };
         
         assert_eq!(frontmatter, parse(file));
