@@ -1,4 +1,4 @@
-use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::Path};
+use std::{env::{current_dir, set_current_dir}, fs, path::Path};
 
 mod post_generator;
 mod frontmatter;
