@@ -6,7 +6,7 @@ struct Frontmatter {
     pub date: String,
 }
 
-fn parse(file: String) -> Frontmatter {
+pub fn parse(file: String) -> Frontmatter {
     let matter = Matter::<YAML>::new();
     let frontmatter_result = matter.parse(&file);
     let frontmatter = frontmatter_result.data.as_ref().unwrap();

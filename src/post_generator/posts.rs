@@ -2,7 +2,7 @@ use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::PathBu
 
 use pulldown_cmark::Options;
 
-use crate::frontmatter::parse_frontmatter;
+use crate::frontmatter::parse;
 
 pub fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_posts_dir: String) {
     for post in posts {
@@ -13,7 +13,7 @@ pub fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_
         let path = post.expect("Couldn't get post file path!").path();
         let file = fs::read_to_string(&path).expect("Couldn't read markdown file!");
         let content = parse_markdown(&file);
-        let data = parse_frontmatter(&file);
+        let data = parse(&file);
         let html = template
             .replace("{content}", &content)
             .replace("{title}", data.title.as_str())
