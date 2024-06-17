@@ -1,6 +1,6 @@
-use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::PathBuf};
+use std::fs::{self, ReadDir};
 
-use crate::frontmatter::{parse, split_markdown, Frontmatter};
+use crate::frontmatter::{split_markdown, Frontmatter};
 
 pub struct Post {
     pub file_path: String,
@@ -8,14 +8,13 @@ pub struct Post {
     pub content: String,
 }
 
-pub fn generate(posts: ReadDir, template: String) {
-    let working_dir = current_dir().expect("Working directory is nonexistent.");
-    let site_posts_dir = [working_dir.to_str().unwrap(), "/site/posts"].concat();
+pub fn generate(posts: ReadDir, template: String) -> Vec<Post> {
+    let posts = write_posts(posts, template);
     
-    write_posts(posts, template, working_dir, site_posts_dir);
+    posts
 }
 
-fn write_posts(post_list: ReadDir, template: String, working_dir: PathBuf, site_posts_dir: String) -> Vec<Post> {
+fn write_posts(post_list: ReadDir, template: String) -> Vec<Post> {
     let mut posts:Vec<Post> = Vec::new();
     
     for post in post_list {

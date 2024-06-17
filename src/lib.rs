@@ -1,4 +1,4 @@
-use std::{env::{current_dir, set_current_dir}, fs, path::Path};
+use std::{fs, path::Path};
 
 use posts::Post;
 
@@ -14,10 +14,11 @@ pub fn generator() {
     
     let posts = fs::read_dir("./posts").expect("Couldn't find post directory!");
     let posts_template = fs::read_to_string("./site/posts/[id].html").expect("Post template doesn't exist.");
-    let index_template = fs::read_to_string("./site/index.html").expect("Index template doesn't exist.");
+    
     fs::remove_file("./site/posts/[id].html").expect("Couldn't delete post template!");
     
     let posts = posts::generate(posts, posts_template);
+    write_post_list(posts);
 }
 
 fn write_post_list(posts: Vec<Post>) {

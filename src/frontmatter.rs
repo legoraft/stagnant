@@ -11,13 +11,13 @@ pub fn split_markdown(file: String) -> (Frontmatter, String) {
     let matter = Matter::<YAML>::new();
     let frontmatter_result = matter.parse(&file);
     
-    let frontmatter = parse(frontmatter_result);
+    let frontmatter = parse(&frontmatter_result);
     let content = frontmatter_result.content;
     
     (frontmatter, content)
 }
 
-fn parse(frontmatter_result: ParsedEntity) -> Frontmatter {
+fn parse(frontmatter_result: &ParsedEntity) -> Frontmatter {
     let title: String = frontmatter_result.data
         .as_ref()
         .unwrap()["title"]
