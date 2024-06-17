@@ -3,9 +3,9 @@ use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::PathBu
 use crate::frontmatter::{parse, split_markdown, Frontmatter};
 
 pub struct Post {
-    file_path: String,
-    frontmatter: Frontmatter,
-    content: String,
+    pub file_path: String,
+    pub frontmatter: Frontmatter,
+    pub content: String,
 }
 
 pub fn generate(posts: ReadDir, template: String) {
@@ -19,10 +19,6 @@ fn write_posts(post_list: ReadDir, template: String, working_dir: PathBuf, site_
     let mut posts:Vec<Post> = Vec::new();
     
     for post in post_list {
-        if current_dir().unwrap() == PathBuf::from(&site_posts_dir) {
-            set_current_dir(&working_dir).expect("Couldn't move to working directory.");
-        }
-
         let path = post.expect("Couldn't get post file path!").path();
         let file = fs::read_to_string(&path).expect("Couldn't read markdown file!");
         let (frontmatter, content) = split_markdown(file);
