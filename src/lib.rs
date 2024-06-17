@@ -23,6 +23,7 @@ pub fn generator() {
 
 fn write_post_list(posts: Vec<Post>) {
     let link_template = fs::read_to_string("./site/[link].html").expect("No link template found!");
+    fs::remove_file("./site/[link].html").expect("Couldn't delete link template!");
     let mut link_list: String = String::new();
     
     for post in posts {
