@@ -64,6 +64,6 @@ This is where te body of the post would go normally.".to_string();
             date: "2023-06-16".to_string(),
         };
         
-        assert_eq!(frontmatter, parse(frontmatter_result));
+        assert_eq!(frontmatter, parse(&frontmatter_result));
     }
 }
