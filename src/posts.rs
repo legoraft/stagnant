@@ -3,7 +3,7 @@ use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::PathBu
 use crate::frontmatter::{parse, split_markdown, Frontmatter};
 
 pub struct Post {
-    filename: String,
+    file_path: String,
     frontmatter: Frontmatter,
     content: String,
 }
@@ -15,8 +15,10 @@ pub fn generate(posts: ReadDir, template: String) {
     write_posts(posts, template, working_dir, site_posts_dir);
 }
 
-fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_posts_dir: String) {
-    for post in posts {
+fn write_posts(post_list: ReadDir, template: String, working_dir: PathBuf, site_posts_dir: String) -> Vec<Post> {
+    let mut posts:Vec<Post> = Vec::new();
+    
+    for post in post_list {
         if current_dir().unwrap() == PathBuf::from(&site_posts_dir) {
             set_current_dir(&working_dir).expect("Couldn't move to working directory.");
         }
@@ -33,7 +35,14 @@ fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_post
         let filename = path.file_stem().unwrap();
         let file_path = [filename.to_str().unwrap(), ".html"].concat();
         
+        posts.push(Post {
+            file_path,
+            frontmatter,
+            content: html,
+        })
     }
+    
+    posts
 }
 
 fn parse_markdown(content: &str) -> String {
