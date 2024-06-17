@@ -1,4 +1,4 @@
-use gray_matter::{engine::YAML, Matter};
+use gray_matter::{engine::YAML, Matter, ParsedEntity};
 
 #[derive(Debug, PartialEq, Eq)]
 pub struct Frontmatter {
@@ -7,10 +7,17 @@ pub struct Frontmatter {
     pub date: String,
 }
 
-pub fn parse(file: String) -> Frontmatter {
+pub fn split_markdown(file: String) -> (Frontmatter, String) {
     let matter = Matter::<YAML>::new();
     let frontmatter_result = matter.parse(&file);
     
+    let frontmatter = parse(frontmatter_result);
+    let content = frontmatter_result.content;
+    
+    (frontmatter, content)
+}
+
+fn parse(frontmatter_result: ParsedEntity) -> Frontmatter {
     let title: String = frontmatter_result.data
         .as_ref()
         .unwrap()["title"]
@@ -48,12 +55,15 @@ description: A fake test post to have as a test case.
 
 This is where te body of the post would go normally.".to_string();
         
+        let matter = Matter::<YAML>::new();
+        let frontmatter_result = matter.parse(&file); 
+        
         let frontmatter = Frontmatter {
             title: "Test post".to_string(),
             description: "A fake test post to have as a test case.".to_string(),
             date: "2023-06-16".to_string(),
         };
         
-        assert_eq!(frontmatter, parse(file));
+        assert_eq!(frontmatter, parse(frontmatter_result));
     }
 }

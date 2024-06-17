@@ -5,10 +5,6 @@ use pulldown_cmark::Options;
 use crate::frontmatter::parse;
 
 pub fn generate(posts: ReadDir, template: String) {
-    if !Path::new("./site/posts").exists() {
-        fs::create_dir("./site/posts/").expect("Couldn't create posts directory!")
-    };
-    
     let working_dir = current_dir().expect("Working directory is nonexistent.");
     let site_posts_dir = [working_dir.to_str().unwrap(), "/site/posts"].concat();
     
@@ -23,8 +19,7 @@ fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_post
 
         let path = post.expect("Couldn't get post file path!").path();
         let file = fs::read_to_string(&path).expect("Couldn't read markdown file!");
-        let content = parse_markdown(&file);
-        let data = parse(file);
+        let (frontmatter, content) = 
         
         let html = template
             .replace("{content}", &content)
