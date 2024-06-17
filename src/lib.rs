@@ -38,4 +38,9 @@ fn write_post_list(posts: Vec<Post>) {
         link_list.push_str(&link);
         link_list.push('\n');
     }
+    
+    let index = fs::read_to_string("./site/index.html").expect("Couldn't read index!");
+    
+    let index_updated = index.replace("{links}", &link_list);
+    fs::write("./site/index.html", &index_updated).expect("Failed to write to index.");
 }
