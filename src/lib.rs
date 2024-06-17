@@ -1,4 +1,6 @@
-use std::{env::{current_dir, set_current_dir}, fs, path::Path};
+use std::{fs, path::Path};
+
+use posts::Post;
 
 mod posts;
 mod frontmatter;
@@ -12,25 +14,35 @@ pub fn generator() {
     
     let posts = fs::read_dir("./posts").expect("Couldn't find post directory!");
     let posts_template = fs::read_to_string("./site/posts/[id].html").expect("Post template doesn't exist.");
-    let index_template = fs::read_to_string("./site/index.html").expect("Index template doesn't exist.");
+    
     fs::remove_file("./site/posts/[id].html").expect("Couldn't delete post template!");
     
-    posts::generate(posts, posts_template);
-    write_index(index_template);
+    let posts = posts::generate(posts, posts_template);
+    write_post_list(posts);
 }
 
-fn write_index(template: String) {
-    set_current_dir(current_dir().unwrap().parent().unwrap()).expect("Couldn't move to working directory.");
-    let posts = fs::read_dir("./posts").expect("Posts haven't compiled!");
-    let mut post_list: String = String::new();
+fn write_post_list(posts: Vec<Post>) {
+    let link_template = fs::read_to_string("./site/[link].html").expect("No link template found!");
+    fs::remove_file("./site/[link].html").expect("Couldn't delete link template!");
+    let mut link_list: String = String::new();
     
     for post in posts {
-        let path = post.unwrap().path();
-        let filename = path.file_stem().unwrap().to_str().unwrap();
-        let link = ["<li><a href=\"./posts/", filename, ".html\">", filename, "</a></li>\n"].concat();
-        post_list.push_str(link.as_str());
+        let file_path = ["./site/posts/", &post.file_path].concat();
+        
+        fs::write(&file_path, &post.content).expect("Couldn't write to post!");
+        
+        let link = link_template
+            .replace("{link}", &["./posts/", &post.file_path].concat())
+            .replace("{title}", &post.frontmatter.title)
+            .replace("{description}", &post.frontmatter.description)
+            .replace("{date}", &post.frontmatter.date);
+        
+        link_list.push_str(&link);
+        link_list.push('\n');
     }
     
-    let index = template.replace("{links}", &post_list);
-    fs::write("./index.html", index).expect("Couldn't write index file!");
+    let index = fs::read_to_string("./site/index.html").expect("Couldn't read index!");
+    
+    let index_updated = index.replace("{links}", &link_list);
+    fs::write("./site/index.html", &index_updated).expect("Failed to write to index.");
 }
