@@ -1,8 +1,12 @@
-use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::{Path, PathBuf}};
+use std::{env::{current_dir, set_current_dir}, fs::{self, ReadDir}, path::PathBuf};
 
-use pulldown_cmark::Options;
+use crate::frontmatter::{parse, split_markdown, Frontmatter};
 
-use crate::frontmatter::{parse, split_markdown};
+pub struct Post {
+    filename: String,
+    frontmatter: Frontmatter,
+    content: String,
+}
 
 pub fn generate(posts: ReadDir, template: String) {
     let working_dir = current_dir().expect("Working directory is nonexistent.");
@@ -21,13 +25,14 @@ fn write_posts(posts: ReadDir, template: String, working_dir: PathBuf, site_post
         let file = fs::read_to_string(&path).expect("Couldn't read markdown file!");
         let (frontmatter, content) = split_markdown(file);
         
-        let html = parse_markdown(&content);
+        let html = template.replace("{content}", &parse_markdown(&content))
+            .replace("{title}", &frontmatter.title)
+            .replace("{date}", &frontmatter.date)
+            .replace("{description}", &frontmatter.description);
 
         let filename = path.file_stem().unwrap();
-        let output_file = [filename.to_str().unwrap(), ".html"].concat();
-
-        set_current_dir(&site_posts_dir).expect("Couldn't move into site posts dir!");
-        fs::write(output_file, html).expect("Couldn't write post file!");
+        let file_path = [filename.to_str().unwrap(), ".html"].concat();
+        
     }
 }
 
