@@ -20,16 +20,16 @@ body {
     align-items: center;
 }
 
-.homepage {
+.homepage, .post {
     width: 40rem;
 }
 
-.homepage h1 {
+h1#title {
     font-size: 2rem;
     padding: 3rem 0 2rem 0;
 }
 
-.homepage h4 {
+h4#username {
     color: var(--secondary-fg);
     font-weight: normal;
     padding-top: 3rem;

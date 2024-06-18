@@ -1,0 +1,13 @@
+.post h1#title {
+    padding: 3rem 0 0.5rem 0;
+}
+
+h4#date {
+    color: var(--secondary-fg);
+    font-weight: normal;
+    padding: 0 0 2rem 0;
+}
+
+p {
+    margin: 0 1rem;
+}
