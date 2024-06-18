@@ -35,7 +35,12 @@ h4#username {
     padding-top: 3rem;
 }
 
-.feed li, a.post {
+.feed li {
+    list-style: none;
+    margin: 1rem 0;
+}
+
+a.post {
     display: flex;
     text-decoration: none;
 }

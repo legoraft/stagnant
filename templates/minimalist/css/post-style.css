@@ -8,6 +8,22 @@ h4#date {
     padding: 0 0 2rem 0;
 }
 
-p {
-    margin: 0 1rem;
+article * {
+    margin: 1rem 0;
+}
+
+article p {
+    color: var(--primary-text);
+}
+
+article a {
+    color: var(--primary-fg);
+}
+
+article h1 {
+    font-size: 2rem;
+}
+
+article h2 {
+    font-size: 1.5rem;
 }
