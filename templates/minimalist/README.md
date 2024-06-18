@@ -8,7 +8,7 @@ Minimalist is a simple, minimalist template for Stagnant. It is just a homepage 
 
 ## Usage
 
-The simplest way to use the minimalist template is to [download] and unzip it. You can also clone the git repository, where you'll have all the templates.
+The simplest way to use the minimalist template is to [download](https://github.com/legoraft/stagnant/releases/download/templates/minimalist.zip) and unzip it. You can also clone the git repository, where you'll have all the templates.
 
 After downloading the template, upload the contents of the folder an empty git repository with `username.github.io`. You can write your posts in the `posts` directoy and your template will reside in the `template` directory.
 
