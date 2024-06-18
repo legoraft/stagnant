@@ -2,6 +2,7 @@ use std::fs::{self, ReadDir};
 
 use crate::frontmatter::{split_markdown, Frontmatter};
 
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Post {
     pub file_path: String,
     pub frontmatter: Frontmatter,
@@ -37,6 +38,7 @@ fn write_posts(post_list: ReadDir, template: String) -> Vec<Post> {
         })
     }
     
+    posts.sort_by(|a, b| b.frontmatter.date.cmp(&a.frontmatter.date));
     posts
 }
 
