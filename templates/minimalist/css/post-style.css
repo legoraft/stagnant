@@ -1,3 +1,11 @@
+:root {
+    --primary-bg: #F9F9F9;
+    --secondary-bg: #D3D3D3;
+    --primary-fg: #0D0D0D;
+    --secondary-fg: #909090;
+    --primary-text: #666666;
+}
+
 .post h1#title {
     padding: 3rem 0 0.5rem 0;
 }
