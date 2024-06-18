@@ -14,4 +14,4 @@ After downloading the template, upload the contents of the folder an empty git r
 
 You'll also likely want to edit the template to use your username. In the `template/index.html` change `username` to your username. Do the same thing in `template/posts/[id].html`.
 
-To get your site up on github pages, you need to adjust a 
+To get your site up on github pages, you need to adjust the github pages settings. You can follow this [tutorial](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site#publishing-with-a-custom-github-actions-workflow) for this. You just have to change the "From branch" setting to "From action".
