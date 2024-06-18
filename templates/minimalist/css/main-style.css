@@ -29,10 +29,11 @@ h1#title {
     padding: 3rem 0 2rem 0;
 }
 
-h4#username {
+h4#username, h4#username a {
     color: var(--secondary-fg);
     font-weight: normal;
     padding-top: 3rem;
+    text-decoration: none;
 }
 
 .feed li {
