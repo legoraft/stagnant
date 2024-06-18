@@ -1,0 +1,25 @@
+:root {
+    --primary-bg: #F9F9F9;
+    --secondary-bg: #191919;
+    --primary-fg: #0D0D0D;
+    --secondary-fg: #DBDBDB;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: var(--primary-bg);
+    color: var(--primary-fg);
+}
+
+.feed {
+    max-width: 36rem;
+}
+
+.feed li {
+    
+}
