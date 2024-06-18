@@ -1,0 +1,40 @@
+name: Build blog
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # To push a branch 
+      pages: write  # To push to a GitHub Pages site
+      id-token: write # To update the deployment status
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Install latest stagnant release
+        # This installs the stagnant binary in the runtime.
+        run: |
+          tag=$(curl 'https://api.github.com/repos/legoraft/stagnant/releases/latest' | jq -r '.tag_name')
+          url="https://github.com/legoraft/stagnant/releases/download/${tag}/stagnant-x86_64-linux"
+          curl -L $url > stagnant
+          echo `pwd`/blog >> $GITHUB_PATH
+      - name: Build blog
+        # This makes the binary executable and builds the blog at the root of the directory.
+        # If your blog is somewhere else, add the directory like this: ./stagnant <directory>
+        run: |
+          chmod +x stagnant
+          ./stagnant
+      - name: Setup pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Upload the site directory, where the html files reside
+          path: 'site'
+      - name: Deploy to GitHub pages
+        id: deployment
+        uses: actions/deploy-pages@v4
