@@ -1,0 +1,29 @@
+.post h1#title {
+    padding: 3rem 0 0.5rem 0;
+}
+
+h4#date {
+    color: var(--secondary-fg);
+    font-weight: normal;
+    padding: 0 0 2rem 0;
+}
+
+article * {
+    margin: 1rem 0;
+}
+
+article p {
+    color: var(--primary-text);
+}
+
+article a {
+    color: var(--primary-fg);
+}
+
+article h1 {
+    font-size: 2rem;
+}
+
+article h2 {
+    font-size: 1.5rem;
+}
