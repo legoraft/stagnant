@@ -55,3 +55,13 @@ p#title {
     text-decoration: underline;
     color: var(--primary-fg);
 }
+
+@media (max-width: 660px) {
+    body {
+        margin: 0 1rem;
+    }
+    
+    .homepage, .post {
+        width: 100%;
+    }
+}
