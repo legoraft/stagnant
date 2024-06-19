@@ -7,8 +7,10 @@ mod parser;
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Frontmatter {
     pub title: String,
-    pub description: String,
     pub date: String,
+    pub description: String,
+    pub image: String,
+    pub tags: String,
 }
 
 pub fn split_markdown(file: String) -> (Frontmatter, String) {
@@ -23,16 +25,20 @@ pub fn split_markdown(file: String) -> (Frontmatter, String) {
 }
 
  fn parse(yaml: Vec<Yaml>) -> Frontmatter {
-    let yaml = yaml[0];
+    let yaml = &yaml[0];
 
     let title: String = check_value("title", &yaml);
     let description: String = check_value("description", &yaml);
     let date: String = check_value("date", &yaml);
-    
+    let image: String = check_value("image", &yaml);
+    let tags: String = check_value("tags", &yaml);
+
     Frontmatter {
         title,
+        date,
         description,
-        date
+        image,
+        tags
     }
 }
 
