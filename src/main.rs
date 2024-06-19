@@ -1,6 +1,7 @@
 use std::env;
 
 use stagnant::generator;
+use yaml_rust2::{YamlEmitter, YamlLoader};
 
 fn main() {
     let args: Vec<String> = env::args().collect();
@@ -13,5 +14,12 @@ fn main() {
     } else {
         eprintln!("Only add a site directory as argument.");
     }
-
+    
+    let frontmatter = "\
+foo:
+  - list1
+  - list2
+bar:
+  - 1
+  - 2.0".to_string();
 }
