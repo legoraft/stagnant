@@ -26,7 +26,9 @@ fn write_posts(post_list: ReadDir, template: String) -> Vec<Post> {
         let html = template.replace("{content}", &parse_markdown(&content))
             .replace("{title}", &frontmatter.title)
             .replace("{date}", &frontmatter.date)
-            .replace("{description}", &frontmatter.description);
+            .replace("{description}", &frontmatter.description)
+            .replace("{image}", &frontmatter.image)
+            .replace("{tags}", &frontmatter.tags);
 
         let filename = path.file_stem().unwrap();
         let file_path = [filename.to_str().unwrap(), ".html"].concat();
