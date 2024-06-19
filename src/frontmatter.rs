@@ -1,4 +1,6 @@
 use gray_matter::{engine::YAML, Matter, ParsedEntity};
+use parser::{check_value, get_yaml};
+use yaml_rust2::Yaml;
 
 mod parser;
 
@@ -13,27 +15,19 @@ pub fn split_markdown(file: String) -> (Frontmatter, String) {
     let matter = Matter::<YAML>::new();
     let frontmatter_result = matter.parse(&file);
     
-    let frontmatter = parse(&frontmatter_result);
+    let yaml = get_yaml(frontmatter_result.matter);
+    let frontmatter = parse(yaml);
     let content = frontmatter_result.content;
     
     (frontmatter, content)
 }
 
-fn parse(frontmatter_result: &ParsedEntity) -> Frontmatter {
-    let title: String = frontmatter_result.data
-        .as_ref()
-        .unwrap()["title"]
-        .as_string().expect("Couldn't parse title");
-    
-    let description: String = frontmatter_result.data
-        .as_ref()
-        .unwrap()["description"]
-        .as_string().expect("Couldn't parse description");
-    
-    let date: String = frontmatter_result.data
-        .as_ref()
-        .unwrap()["date"]
-        .as_string().expect("Couldn't parse date");
+ fn parse(yaml: Vec<Yaml>) -> Frontmatter {
+    let yaml = yaml[0];
+
+    let title: String = check_value("title", &yaml);
+    let description: String = check_value("description", &yaml);
+    let date: String = check_value("date", &yaml);
     
     Frontmatter {
         title,

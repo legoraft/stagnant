@@ -1,16 +1,12 @@
-use std::io::Error;
-
 use yaml_rust2::{Yaml, YamlLoader};
 
-use super::*;
-
-fn parse(frontmatter: String) -> Vec<Yaml> {
+pub fn get_yaml(frontmatter: String) -> Vec<Yaml> {
     let yaml = YamlLoader::load_from_str(&frontmatter).unwrap();
     
     yaml
 }
 
-fn check_value(index: &str, yaml: Yaml) -> String {
+pub fn check_value(index: &str, yaml: &Yaml) -> String {
     if yaml[index].is_badvalue() {
         return format!("{:?}", index);
     }
