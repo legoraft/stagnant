@@ -20,7 +20,13 @@ mod tests {
     use super::*;
     
     #[test]
-    fn test_parsing() {
+    fn test_value() {
+        let frontmatter = "\
+title: \"Hello, world!\"
+date: \"2024-06-19\"";
         
+        let yaml = YamlLoader::load_from_str(frontmatter).unwrap();
+        
+        assert_eq!("Hello, world!", check_value("title", &yaml[0]));
     }
 }

@@ -1,4 +1,4 @@
-use gray_matter::{engine::YAML, Matter, ParsedEntity};
+use gray_matter::{engine::YAML, Matter};
 use parser::{check_value, get_yaml};
 use yaml_rust2::Yaml;
 
@@ -50,22 +50,27 @@ mod tests {
     fn test_frontmatter() {
         let file: String = "\
 ---
-title: Test post
-date: 2023-06-16
-description: A fake test post to have as a test case.
+title: \"Test post\"
+date: \"2023-06-16\"
+description: \"A fake test post to have as a test case.\"
+image: \"images/image.png\"
+tags: \"test, hello, world\"
 ---
 
 This is where te body of the post would go normally.".to_string();
         
         let matter = Matter::<YAML>::new();
-        let frontmatter_result = matter.parse(&file); 
+        let frontmatter_result = matter.parse(&file);
+        let yaml = get_yaml(frontmatter_result.matter);
         
         let frontmatter = Frontmatter {
             title: "Test post".to_string(),
-            description: "A fake test post to have as a test case.".to_string(),
             date: "2023-06-16".to_string(),
+            description: "A fake test post to have as a test case.".to_string(),
+            image: "images/image.png".to_string(),
+            tags: "test, hello, world".to_string(),
         };
         
-        assert_eq!(frontmatter, parse(&frontmatter_result));
+        assert_eq!(frontmatter, parse(yaml));
     }
 }
