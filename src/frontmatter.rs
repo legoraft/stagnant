@@ -1,5 +1,7 @@
 use gray_matter::{engine::YAML, Matter, ParsedEntity};
 
+mod parser;
+
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Frontmatter {
     pub title: String,
