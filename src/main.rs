@@ -13,5 +13,4 @@ fn main() {
     } else {
         eprintln!("Only add a site directory as argument.");
     }
-
 }

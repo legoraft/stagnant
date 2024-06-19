@@ -1,42 +1,44 @@
-use gray_matter::{engine::YAML, Matter, ParsedEntity};
+use gray_matter::{engine::YAML, Matter};
+use parser::{check_value, get_yaml};
+use yaml_rust2::Yaml;
+
+mod parser;
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Frontmatter {
     pub title: String,
-    pub description: String,
     pub date: String,
+    pub description: String,
+    pub image: String,
+    pub tags: String,
 }
 
 pub fn split_markdown(file: String) -> (Frontmatter, String) {
     let matter = Matter::<YAML>::new();
     let frontmatter_result = matter.parse(&file);
     
-    let frontmatter = parse(&frontmatter_result);
+    let yaml = get_yaml(frontmatter_result.matter);
+    let frontmatter = parse(yaml);
     let content = frontmatter_result.content;
     
     (frontmatter, content)
 }
 
-fn parse(frontmatter_result: &ParsedEntity) -> Frontmatter {
-    let title: String = frontmatter_result.data
-        .as_ref()
-        .unwrap()["title"]
-        .as_string().expect("Couldn't parse title");
-    
-    let description: String = frontmatter_result.data
-        .as_ref()
-        .unwrap()["description"]
-        .as_string().expect("Couldn't parse description");
-    
-    let date: String = frontmatter_result.data
-        .as_ref()
-        .unwrap()["date"]
-        .as_string().expect("Couldn't parse date");
-    
+ fn parse(yaml: Vec<Yaml>) -> Frontmatter {
+    let yaml = &yaml[0];
+
+    let title: String = check_value("title", &yaml);
+    let description: String = check_value("description", &yaml);
+    let date: String = check_value("date", &yaml);
+    let image: String = check_value("image", &yaml);
+    let tags: String = check_value("tags", &yaml);
+
     Frontmatter {
         title,
+        date,
         description,
-        date
+        image,
+        tags
     }
 }
 
@@ -48,22 +50,27 @@ mod tests {
     fn test_frontmatter() {
         let file: String = "\
 ---
-title: Test post
-date: 2023-06-16
-description: A fake test post to have as a test case.
+title: \"Test post\"
+date: \"2023-06-16\"
+description: \"A fake test post to have as a test case.\"
+image: \"images/image.png\"
+tags: \"test, hello, world\"
 ---
 
 This is where te body of the post would go normally.".to_string();
         
         let matter = Matter::<YAML>::new();
-        let frontmatter_result = matter.parse(&file); 
+        let frontmatter_result = matter.parse(&file);
+        let yaml = get_yaml(frontmatter_result.matter);
         
         let frontmatter = Frontmatter {
             title: "Test post".to_string(),
-            description: "A fake test post to have as a test case.".to_string(),
             date: "2023-06-16".to_string(),
+            description: "A fake test post to have as a test case.".to_string(),
+            image: "images/image.png".to_string(),
+            tags: "test, hello, world".to_string(),
         };
         
-        assert_eq!(frontmatter, parse(&frontmatter_result));
+        assert_eq!(frontmatter, parse(yaml));
     }
 }

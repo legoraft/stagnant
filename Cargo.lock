@@ -227,6 +227,7 @@ dependencies = [
  "gray_matter",
  "pulldown-cmark",
  "tempfile",
+ "yaml-rust2",
 ]
 
 [[package]]
