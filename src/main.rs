@@ -6,8 +6,6 @@ use stagnant::generator;
 mod cli;
 
 fn main() {
-    let args: Vec<String> = env::args().collect();
-    
     let arguments = parse_args();
     
     match arguments.directory {
