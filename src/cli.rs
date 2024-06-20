@@ -1,11 +1,11 @@
 use clap::Parser;
 
 #[derive(Parser, Debug)]
+#[command(version, about, long_about = None)]
 pub struct Args {
-    pub file: String,
-    
+    pub template: Option<String>,
     #[arg(short, long)]
-    pub list: String,
+    pub list: Option<String>,
 }
 
 pub fn parse_args(args: Vec<String>) -> Args {

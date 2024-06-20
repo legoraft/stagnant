@@ -1,10 +1,15 @@
 use std::env;
 
-use stagnant::generator;
-crate stagnant::cli::parse_args;
+use cli::parse_args;
+
+mod cli;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
     
-    parse_args(args);
+    let arguments = parse_args(args);
+    
+    if arguments.template.is_some() {
+        
+    }
 }
