@@ -5,6 +5,7 @@ use posts::Post;
 mod posts;
 mod frontmatter;
 mod template;
+mod cli;
 
 pub fn generator() {
     let template_path = Path::new("./template");
