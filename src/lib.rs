@@ -6,7 +6,7 @@ mod posts;
 mod frontmatter;
 mod template;
 
-pub fn generator() {
+pub fn old_generator() {
     let template_path = Path::new("./template");
     let site_path = Path::new("./site");
     
@@ -18,10 +18,10 @@ pub fn generator() {
     fs::remove_file("./site/posts/[id].html").expect("Couldn't delete post template!");
     
     let posts = posts::generate(posts, posts_template);
-    write_post_list(posts);
+    old_write_post_list(posts);
 }
 
-fn write_post_list(posts: Vec<Post>) {
+fn old_write_post_list(posts: Vec<Post>) {
     let link_template = fs::read_to_string("./site/[link].html").expect("No link template found!");
     fs::remove_file("./site/[link].html").expect("Couldn't delete link template!");
     let mut link_list: String = String::new();
