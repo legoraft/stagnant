@@ -9,6 +9,7 @@ edition = "2021"
 pulldown-cmark = "0.11.0"
 gray_matter = "0.2.8"
 yaml-rust2 = "0.8.1"
+clap = "4.5.7"
 
 [dev-dependencies]
 tempfile = "3.10.1"
