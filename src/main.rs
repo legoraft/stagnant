@@ -9,7 +9,10 @@ fn main() {
     
     let arguments = parse_args(args);
     
-    if arguments.template.is_some() {
-        
+    match arguments.directory {
+        Some(dir) => env::set_current_dir(dir).expect("Couldn't change to specified directory."),
+        None => eprintln!("No directory specified, looking for template."),
     }
+    
+    
 }
