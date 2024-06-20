@@ -8,7 +8,7 @@ pub struct Args {
     pub list_file: Option<String>,
 }
 
-pub fn parse_args(args: Vec<String>) -> Args {
+pub fn parse_args() -> Args {
     let args = Args::parse();
     
     args
