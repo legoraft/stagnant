@@ -68,6 +68,6 @@ This is where te body of the post would go normally.".to_string();
             tags: "test, hello, world".to_string(),
         };
         
-        assert_eq!(frontmatter, parse(yaml));
+        assert_eq!(frontmatter, Frontmatter::get(yaml));
     }
 }

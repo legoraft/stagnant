@@ -15,8 +15,10 @@ pub fn split_post(file: String) -> (String, String) {
             continue;
         } else if in_matter {
             matter.push_str(line);
+            matter.push('\n');
         } else {
             content.push_str(line);
+            content.push('\n')
         }
     }
     
@@ -39,7 +41,7 @@ This is some content to test if we also get this.
 
 I also want an extra line to check if it works completely.".to_string();
         
-        let (matter, content) = ("title: \"Hello, world!\"\ndate: \"2024-06-21\"".to_string(), "\n\nThis is some content to test if we also get this.\n\nI also want an extra line to check if it works completely.".to_string());
+        let (matter, content) = ("title: \"Hello, world!\"\ndate: \"2024-06-21\"\n".to_string(), "\nThis is some content to test if we also get this.\n\nI also want an extra line to check if it works completely.\n".to_string());
         
         assert_eq!((matter, content), split_post(file));
     }

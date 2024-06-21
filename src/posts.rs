@@ -1,6 +1,6 @@
 use std::fs::{self, ReadDir};
 
-use crate::frontmatter::{split_markdown, Frontmatter};
+use crate::frontmatter::Frontmatter;
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Post {

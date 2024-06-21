@@ -42,15 +42,15 @@ fn write_links() {
     
     for post in posts {
         let file_path = ["./site/posts/", &post.file_path].concat();
-        
+    
         fs::write(&file_path, &post.content).expect("Couldn't write to post!");
-        
+    
         let link = link_template
             .replace("{link}", &["./posts/", &post.file_path].concat())
             .replace("{title}", &post.frontmatter.title)
             .replace("{description}", &post.frontmatter.description)
             .replace("{date}", &post.frontmatter.date);
-        
+    
         link_list.push_str(&link);
         link_list.push('\n');
     }
