@@ -1,8 +1,9 @@
 use gray_matter::{engine::YAML, Matter};
-use parser::{check_value, get_yaml};
+use yaml_parser::{check_value, get_yaml};
 use yaml_rust2::Yaml;
 
-mod parser;
+mod yaml_parser;
+mod splitter;
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Frontmatter {
@@ -13,33 +14,29 @@ pub struct Frontmatter {
     pub tags: String,
 }
 
-pub fn split_markdown(file: String) -> (Frontmatter, String) {
-    let matter = Matter::<YAML>::new();
-    let frontmatter_result = matter.parse(&file);
+impl Frontmatter {
+    fn get(yaml: Vec<Yaml>) -> Self {
+        let yaml = &yaml[0];
     
-    let yaml = get_yaml(frontmatter_result.matter);
-    let frontmatter = parse(yaml);
-    let content = frontmatter_result.content;
+        let title: String = check_value("title", &yaml);
+        let description: String = check_value("description", &yaml);
+        let date: String = check_value("date", &yaml);
+        let image: String = check_value("image", &yaml);
+        let tags: String = check_value("tags", &yaml);
     
-    (frontmatter, content)
+        Frontmatter {
+            title,
+            date,
+            description,
+            image,
+            tags
+        }
+    }
 }
 
- fn parse(yaml: Vec<Yaml>) -> Frontmatter {
-    let yaml = &yaml[0];
-
-    let title: String = check_value("title", &yaml);
-    let description: String = check_value("description", &yaml);
-    let date: String = check_value("date", &yaml);
-    let image: String = check_value("image", &yaml);
-    let tags: String = check_value("tags", &yaml);
-
-    Frontmatter {
-        title,
-        date,
-        description,
-        image,
-        tags
-    }
+fn parse(file: String) -> (Frontmatter, String) {
+    
+    let frontmatter = Frontmatter::get(yaml);
 }
 
 #[cfg(test)]
