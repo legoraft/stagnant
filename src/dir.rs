@@ -1,22 +1,23 @@
-use std::path::Path;
+use std::{fs, path::Path};
 
 use crate::template;
 
 pub fn create_site() {
-    duplicate_template();
+    let template = duplicate_template();
     parse_frontmatter(template);
     write_html();
 }
 
-fn duplicate_template() {
+fn duplicate_template() -> String {
     let template_path = Path::new("./template");
     let site_path = Path::new("./site");
     
     template::copy_directory(template_path, site_path).expect("Couldn't copy template!");
     
     let posts_template = fs::read_to_string("./site/posts/[id].html").expect("Post template doesn't exist.");
-    
     fs::remove_file("./site/posts/[id].html").expect("Couldn't delete post template!");
+    
+    posts_template
 }
 
 fn parse_frontmatter(template: String) {
