@@ -7,9 +7,3 @@ pub struct Args {
     #[arg(short, long)]
     pub list_file: Option<String>,
 }
-
-pub fn parse_args() -> Args {
-    let args = Args::parse();
-    
-    args
-}
