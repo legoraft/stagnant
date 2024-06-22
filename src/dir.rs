@@ -2,6 +2,7 @@ use std::{fs, path::Path};
 
 use crate::template;
 
+// Called by lib to start site generation
 pub fn create_site() {
     let template = duplicate_template();
     parse_frontmatter(template);
@@ -9,6 +10,7 @@ pub fn create_site() {
 }
 
 fn duplicate_template() -> String {
+    // Copies template to the site dir, returns a template for the posts (html)
     let template_path = Path::new("./template");
     let site_path = Path::new("./site");
     
@@ -21,8 +23,12 @@ fn duplicate_template() -> String {
 }
 
 fn parse_frontmatter(template: String) {
+    // Gets all frontmatter and content from a markdown file
+    // Removes the --- from frontmatter and parses the yaml
     let (frontmatter, content) = split_markdown(file);
     
+    // Replaces all possible variables in html to the correct values
+    // Stagnant uses a limited amount of variables, so this is the effective way
     let html = template.replace("{title}", &frontmatter.title)
         .replace("{date}", &frontmatter.date)
         .replace("{description}", &frontmatter.description)
@@ -36,10 +42,13 @@ fn write_html() {
 }
 
 fn write_links() {
+    // Gets the link template, which is just a simple html snippet in a separate file
     let link_template = fs::read_to_string("./site/[link].html").expect("No link template found!");
     fs::remove_file("./site/[link].html").expect("Couldn't delete link template!");
     let mut link_list: String = String::new();
     
+    // Iterates over all generated posts (to prevent copying file names in the md posts dir that don't exist)
+    // Gets all the data from frontmatter and replaces the variables again
     for post in posts {
         let file_path = ["./site/posts/", &post.file_path].concat();
     
@@ -55,6 +64,7 @@ fn write_links() {
         link_list.push('\n');
     }
     
+    // The full list of link snippets is written to the specified link list file
     let index = fs::read_to_string("./site/index.html").expect("Couldn't read index!");
     
     let index_updated = index.replace("{links}", &link_list);
