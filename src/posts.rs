@@ -6,10 +6,10 @@ use crate::frontmatter::{self, Frontmatter};
 pub struct Post {
     pub file_path: String,
     pub frontmatter: Frontmatter,
-    pub content: String,
+    pub html: String,
 }
 
-pub fn generate(posts: ReadDir, template: String) -> Vec<Post> {
+pub fn generate_posts(posts: ReadDir, template: String) -> Vec<Post> {
     let posts = write_posts(posts, template);
     
     posts
@@ -23,7 +23,7 @@ fn write_posts(post_list: ReadDir, template: String) -> Vec<Post> {
         let file = fs::read_to_string(&path).expect("Couldn't read markdown file!");
         
         let (matter, content) = frontmatter::parse(file);
-        let content = replace_tags(&content, template, matter);
+        let html = replace_tags(&content, template, matter);
 
         let filename = path.file_stem().unwrap();
         let file_path = [filename.to_str().unwrap(), ".html"].concat();
@@ -31,7 +31,7 @@ fn write_posts(post_list: ReadDir, template: String) -> Vec<Post> {
         posts.push(Post {
             file_path,
             frontmatter: matter,
-            content,
+            html,
         })
     }
     

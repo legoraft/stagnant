@@ -1,15 +1,16 @@
-use std::{fs::{self, ReadDir}, path::Path};
+use std::{fs::{self, read_dir}, path::Path};
 
-use crate::{frontmatter, template};
+use crate::{posts::{self, Post}, template};
 
 // Called by lib to start site generation
-pub fn create_site(posts: ReadDir) {
+pub fn create_site() {
     let template = duplicate_template();
+
+    let posts = read_dir("./posts").expect("Couldn't read posts directory!");
+    let posts = posts::generate_posts(posts, template);
     
-    for post in posts {
-        parse_frontmatter(template, post);
-        write_html();
-    }
+    write_html(posts)
+    write_links(posts);
 }
 
 fn duplicate_template() -> String {
@@ -25,11 +26,13 @@ fn duplicate_template() -> String {
     posts_template
 }
 
-fn write_html() {
-    
+fn write_html(posts: Vec<Post>) {
+    for post in posts {
+        
+    }
 }
 
-fn write_links() {
+fn write_links(posts: Vec<Post>) {
     // Gets the link template, which is just a simple html snippet in a separate file
     let link_template = fs::read_to_string("./site/[link].html").expect("No link template found!");
     fs::remove_file("./site/[link].html").expect("Couldn't delete link template!");
