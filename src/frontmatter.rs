@@ -37,6 +37,7 @@ impl Frontmatter {
 
 pub fn parse(file: String) -> (Frontmatter, String) {
     // Splits frontmatter and content and creates Frontmatter struct from it
+    // Called by get_posts
     let (matter, content) = split_post(file);
     
     let yaml = get_yaml(matter);

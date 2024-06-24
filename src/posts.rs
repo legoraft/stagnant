@@ -10,12 +10,12 @@ pub struct Post {
 }
 
 pub fn generate_posts(posts: ReadDir, template: String) -> Vec<Post> {
-    let posts = write_posts(posts, template);
+    let posts = get_posts(posts, template);
     
     posts
 }
 
-fn write_posts(post_list: ReadDir, template: String) -> Vec<Post> {
+fn get_posts(post_list: ReadDir, template: String) -> Vec<Post> {
     let mut posts:Vec<Post> = Vec::new();
     
     for post in post_list {
