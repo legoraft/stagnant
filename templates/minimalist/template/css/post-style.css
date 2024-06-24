@@ -22,10 +22,11 @@ article {
 
 article * {
     margin: 1rem 0;
+    color: var(--primary-text);
 }
 
-article p {
-    color: var(--primary-text);
+article ul, article ol {
+    margin: 0 0 0 1rem;
 }
 
 article a {
@@ -34,8 +35,10 @@ article a {
 
 article h1 {
     font-size: 2rem;
+    color: var(--primary-fg);
 }
 
 article h2 {
     font-size: 1.5rem;
+    color: var(--primary-fg);
 }

@@ -1,8 +1,9 @@
-use gray_matter::{engine::YAML, Matter};
-use parser::{check_value, get_yaml};
+use splitter::split_post;
+use yaml_parser::{check_value, get_yaml};
 use yaml_rust2::Yaml;
 
-mod parser;
+mod yaml_parser;
+mod splitter;
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Frontmatter {
@@ -13,33 +14,36 @@ pub struct Frontmatter {
     pub tags: String,
 }
 
-pub fn split_markdown(file: String) -> (Frontmatter, String) {
-    let matter = Matter::<YAML>::new();
-    let frontmatter_result = matter.parse(&file);
+impl Frontmatter {
+    // Checks if frontmatter values exist and writes them to Frontmatter struct
+    fn get(yaml: Vec<Yaml>) -> Self {
+        let yaml = &yaml[0];
     
-    let yaml = get_yaml(frontmatter_result.matter);
-    let frontmatter = parse(yaml);
-    let content = frontmatter_result.content;
+        let title: String = check_value("title", &yaml);
+        let description: String = check_value("description", &yaml);
+        let date: String = check_value("date", &yaml);
+        let image: String = check_value("image", &yaml);
+        let tags: String = check_value("tags", &yaml);
     
-    (frontmatter, content)
+        Frontmatter {
+            title,
+            date,
+            description,
+            image,
+            tags
+        }
+    }
 }
 
- fn parse(yaml: Vec<Yaml>) -> Frontmatter {
-    let yaml = &yaml[0];
-
-    let title: String = check_value("title", &yaml);
-    let description: String = check_value("description", &yaml);
-    let date: String = check_value("date", &yaml);
-    let image: String = check_value("image", &yaml);
-    let tags: String = check_value("tags", &yaml);
-
-    Frontmatter {
-        title,
-        date,
-        description,
-        image,
-        tags
-    }
+pub fn parse(file: String) -> (Frontmatter, String) {
+    // Splits frontmatter and content and creates Frontmatter struct from it
+    // Called by get_posts
+    let (matter, content) = split_post(file);
+    
+    let yaml = get_yaml(matter);
+    let matter = Frontmatter::get(yaml);
+    
+    (matter, content)
 }
 
 #[cfg(test)]
@@ -58,11 +62,7 @@ tags: \"test, hello, world\"
 ---
 
 This is where te body of the post would go normally.".to_string();
-        
-        let matter = Matter::<YAML>::new();
-        let frontmatter_result = matter.parse(&file);
-        let yaml = get_yaml(frontmatter_result.matter);
-        
+
         let frontmatter = Frontmatter {
             title: "Test post".to_string(),
             date: "2023-06-16".to_string(),
@@ -70,7 +70,8 @@ This is where te body of the post would go normally.".to_string();
             image: "images/image.png".to_string(),
             tags: "test, hello, world".to_string(),
         };
+        let content = "This is where te body of the post would go normally.".to_string();
         
-        assert_eq!(frontmatter, parse(yaml));
+        assert_eq!((frontmatter, content), parse(file));
     }
 }

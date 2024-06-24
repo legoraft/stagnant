@@ -1,10 +1,12 @@
 use std::{fs, io, path::Path};
 
 pub fn copy_directory(source: &Path, destination: &Path) -> io::Result<()> {
+    // Checks if the directory exists and writes a site path
     if !destination.exists() {
         fs::create_dir_all(destination)?;
     }
     
+    // Recursive function to copy all files within a directory to site directory
     for entry_result in fs::read_dir(source)? {
         let entry = entry_result?;
         let source_path = entry.path();

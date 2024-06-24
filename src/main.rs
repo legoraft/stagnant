@@ -1,16 +1,18 @@
 use std::env;
 
+use clap::Parser;
+use cli::Args;
 use stagnant::generator;
 
+mod cli;
+
 fn main() {
-    let args: Vec<String> = env::args().collect();
+    let arguments = Args::parse();
     
-    if args.len() < 2 {
-        generator();
-    } else if args.len() == 2 {
-        env::set_current_dir(&args[1]).expect("Couldn't move into specified directory!");
-        generator();
-    } else {
-        eprintln!("Only add a site directory as argument.");
+    match arguments.directory {
+        Some(dir) => env::set_current_dir(dir).expect("Couldn't change to specified directory."),
+        None => eprintln!("No directory specified, looking for template."),
     }
+    
+    generator();
 }
