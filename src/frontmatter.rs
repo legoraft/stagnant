@@ -15,6 +15,7 @@ pub struct Frontmatter {
 }
 
 impl Frontmatter {
+    // Checks if frontmatter values exist and writes them to Frontmatter struct
     fn get(yaml: Vec<Yaml>) -> Self {
         let yaml = &yaml[0];
     
@@ -35,6 +36,7 @@ impl Frontmatter {
 }
 
 pub fn parse(file: String) -> (Frontmatter, String) {
+    // Splits frontmatter and content and creates Frontmatter struct from it
     let (matter, content) = split_post(file);
     
     let yaml = get_yaml(matter);
