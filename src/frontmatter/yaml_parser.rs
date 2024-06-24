@@ -1,12 +1,14 @@
 use yaml_rust2::{Yaml, YamlLoader};
 
 pub fn get_yaml(frontmatter: String) -> Vec<Yaml> {
+    // Gets all yaml from a frontmatter string
     let yaml = YamlLoader::load_from_str(&frontmatter).unwrap();
     
     yaml
 }
 
 pub fn check_value(index: &str, yaml: &Yaml) -> String {
+    // Checks if yaml exists, otherwise return field name
     if yaml[index].is_badvalue() {
         return format!("{}", index);
     }
