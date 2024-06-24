@@ -25,12 +25,14 @@ fn duplicate_template() -> String {
 }
 
 fn write_html(posts: Vec<Post>) {
+    // Writes all the posts to the html site
     for post in &posts {
         let post_path = ["./site/posts/", &post.file_path].concat();
         
         fs::write(post_path, &post.html).expect("Couldn't write post to file!");
     }
     
+    // Gets the link list from the html posts and writes to index
     let link_list = get_links(posts);
     let index_template = fs::read_to_string("./site/index.html").expect("Couldn't read index file!");
     
