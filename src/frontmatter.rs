@@ -62,11 +62,7 @@ tags: \"test, hello, world\"
 ---
 
 This is where te body of the post would go normally.".to_string();
-        
-        let matter = Matter::<YAML>::new();
-        let frontmatter_result = matter.parse(&file);
-        let yaml = get_yaml(frontmatter_result.matter);
-        
+
         let frontmatter = Frontmatter {
             title: "Test post".to_string(),
             date: "2023-06-16".to_string(),
@@ -74,7 +70,8 @@ This is where te body of the post would go normally.".to_string();
             image: "images/image.png".to_string(),
             tags: "test, hello, world".to_string(),
         };
+        let content = "This is where te body of the post would go normally.".to_string();
         
-        assert_eq!(frontmatter, Frontmatter::get(yaml));
+        assert_eq!((frontmatter, content), parse(file));
     }
 }
