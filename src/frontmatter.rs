@@ -1,4 +1,4 @@
-use gray_matter::{engine::YAML, Matter};
+use splitter::split_post;
 use yaml_parser::{check_value, get_yaml};
 use yaml_rust2::Yaml;
 
@@ -34,9 +34,13 @@ impl Frontmatter {
     }
 }
 
-fn parse(file: String) -> (Frontmatter, String) {
+pub fn parse(file: String) -> (Frontmatter, String) {
+    let (matter, content) = split_post(file);
     
-    let frontmatter = Frontmatter::get(yaml);
+    let yaml = get_yaml(matter);
+    let matter = Frontmatter::get(yaml);
+    
+    (matter, content)
 }
 
 #[cfg(test)]

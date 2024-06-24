@@ -1,6 +1,6 @@
 use std::{fs, path::Path};
 
-use crate::template;
+use crate::{frontmatter, template};
 
 // Called by lib to start site generation
 pub fn create_site() {
@@ -25,7 +25,7 @@ fn duplicate_template() -> String {
 fn parse_frontmatter(template: String) {
     // Gets all frontmatter and content from a markdown file
     // Removes the --- from frontmatter and parses the yaml
-    let (frontmatter, content) = split_markdown(file);
+    let (frontmatter, content) = ;
     
     // Replaces all possible variables in html to the correct values
     // Stagnant uses a limited amount of variables, so this is the effective way

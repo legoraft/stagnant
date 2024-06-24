@@ -8,6 +8,10 @@ mod template;
 mod dir;
 
 pub fn generator() {
+    let template_path = Path::new("./template");
+    let site_path = Path::new("./site");
+    
+    template::copy_directory(template_path, site_path).expect("Couldn't copy template to site!");
     
 }
 
