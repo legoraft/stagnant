@@ -28,11 +28,13 @@ fn duplicate_template() -> String {
 
 fn write_html(posts: Vec<Post>) {
     for post in posts {
+        let post_path = ["./site/posts/", &post.file_path].concat();
         
+        fs::write(post_path, post.html).expect("Couldn't write post to file!");
     }
 }
 
-fn write_links(posts: Vec<Post>) {
+fn get_links(posts: Vec<Post>) -> String {
     // Gets the link template, which is just a simple html snippet in a separate file
     let link_template = fs::read_to_string("./site/[link].html").expect("No link template found!");
     fs::remove_file("./site/[link].html").expect("Couldn't delete link template!");
@@ -40,11 +42,7 @@ fn write_links(posts: Vec<Post>) {
     
     // Iterates over all generated posts (to prevent copying file names in the md posts dir that don't exist)
     // Gets all the data from frontmatter and replaces the variables again
-    for post in posts {
-        let file_path = ["./site/posts/", &post.file_path].concat();
-    
-        fs::write(&file_path, &post.content).expect("Couldn't write to post!");
-    
+    for post in posts {    
         let link = link_template
             .replace("{link}", &["./posts/", &post.file_path].concat())
             .replace("{title}", &post.frontmatter.title)
