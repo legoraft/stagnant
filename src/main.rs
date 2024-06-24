@@ -2,7 +2,7 @@ use std::env;
 
 use clap::Parser;
 use cli::Args;
-use stagnant::old_generator;
+use stagnant::generator;
 
 mod cli;
 
@@ -14,5 +14,5 @@ fn main() {
         None => eprintln!("No directory specified, looking for template."),
     }
     
-    old_generator();
+    generator();
 }

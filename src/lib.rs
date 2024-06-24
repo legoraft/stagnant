@@ -1,6 +1,6 @@
-use std::{fs, path::Path};
+use std::fs;
 
-use posts::Post;
+use dir::create_site;
 
 mod posts;
 mod frontmatter;
@@ -8,12 +8,12 @@ mod template;
 mod dir;
 
 pub fn generator() {
-    let template_path = Path::new("./template");
-    let site_path = Path::new("./site");
-    
-    template::copy_directory(template_path, site_path).expect("Couldn't copy template to site!");
     let posts = fs::read_dir("./posts").expect("Couldn't find post directory!");
+    
+    create_site(posts)
 }
+
+/*
 
 pub fn old_generator() {
     let template_path = Path::new("./template");
@@ -55,3 +55,5 @@ fn old_write_post_list(posts: Vec<Post>) {
     let index_updated = index.replace("{links}", &link_list);
     fs::write("./site/index.html", &index_updated).expect("Failed to write to index.");
 }
+
+*/

@@ -8,7 +8,7 @@ pub fn get_yaml(frontmatter: String) -> Vec<Yaml> {
 
 pub fn check_value(index: &str, yaml: &Yaml) -> String {
     if yaml[index].is_badvalue() {
-        return format!("{:?}", index);
+        return format!("{}", index);
     }
     
     let value: &str = yaml[index].as_str().unwrap();

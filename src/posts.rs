@@ -23,7 +23,7 @@ fn write_posts(post_list: ReadDir, template: String) -> Vec<Post> {
         let file = fs::read_to_string(&path).expect("Couldn't read markdown file!");
         
         let (matter, content) = frontmatter::parse(file);
-        let html = replace_tags(&content, template, matter);
+        let html = replace_tags(&content, &template, &matter);
 
         let filename = path.file_stem().unwrap();
         let file_path = [filename.to_str().unwrap(), ".html"].concat();
@@ -39,7 +39,7 @@ fn write_posts(post_list: ReadDir, template: String) -> Vec<Post> {
     posts
 }
 
-fn replace_tags(content: &str, template: String, matter: Frontmatter) -> String {
+fn replace_tags(content: &str, template: &str, matter: &Frontmatter) -> String {
     let html = template.replace("{title}", &matter.title)
         .replace("{date}", &matter.date)
         .replace("{description}", &matter.description)
