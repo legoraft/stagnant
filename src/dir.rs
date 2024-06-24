@@ -1,12 +1,15 @@
-use std::{fs, path::Path};
+use std::{fs::{self, ReadDir}, path::Path};
 
 use crate::{frontmatter, template};
 
 // Called by lib to start site generation
-pub fn create_site() {
+pub fn create_site(posts: ReadDir) {
     let template = duplicate_template();
-    parse_frontmatter(template);
-    write_html();
+    
+    for post in posts {
+        parse_frontmatter(template, post);
+        write_html();
+    }
 }
 
 fn duplicate_template() -> String {
@@ -20,21 +23,6 @@ fn duplicate_template() -> String {
     fs::remove_file("./site/posts/[id].html").expect("Couldn't delete post template!");
     
     posts_template
-}
-
-fn parse_frontmatter(template: String, file: String) {
-    // Gets all frontmatter and content from a markdown file
-    // Removes the --- from frontmatter and parses the yaml to a Frontmatter struct
-    let (matter, content) = frontmatter::parse(file);
-    
-    // Replaces all possible variables in html to the correct values
-    // Stagnant uses a limited amount of variables, so this is the effective way
-    let html = template.replace("{title}", &matter.title)
-        .replace("{date}", &matter.date)
-        .replace("{description}", &matter.description)
-        .replace("{image}", &matter.image)
-        .replace("{tags}", &matter.tags)
-        .replace("{content}", &parse_markdown(&content));
 }
 
 fn write_html() {

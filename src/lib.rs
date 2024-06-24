@@ -12,7 +12,7 @@ pub fn generator() {
     let site_path = Path::new("./site");
     
     template::copy_directory(template_path, site_path).expect("Couldn't copy template to site!");
-    
+    let posts = fs::read_dir("./posts").expect("Couldn't find post directory!");
 }
 
 pub fn old_generator() {

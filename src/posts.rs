@@ -1,6 +1,6 @@
 use std::fs::{self, ReadDir};
 
-use crate::frontmatter::Frontmatter;
+use crate::frontmatter::{self, Frontmatter};
 
 #[derive(Debug, PartialEq, Eq, PartialOrd, Ord)]
 pub struct Post {
@@ -21,27 +21,33 @@ fn write_posts(post_list: ReadDir, template: String) -> Vec<Post> {
     for post in post_list {
         let path = post.expect("Couldn't get post file path!").path();
         let file = fs::read_to_string(&path).expect("Couldn't read markdown file!");
-        let (frontmatter, content) = split_markdown(file);
         
-        let html = template.replace("{content}", &parse_markdown(&content))
-            .replace("{title}", &frontmatter.title)
-            .replace("{date}", &frontmatter.date)
-            .replace("{description}", &frontmatter.description)
-            .replace("{image}", &frontmatter.image)
-            .replace("{tags}", &frontmatter.tags);
+        let (matter, content) = frontmatter::parse(file);
+        let content = replace_tags(&content, template, matter);
 
         let filename = path.file_stem().unwrap();
         let file_path = [filename.to_str().unwrap(), ".html"].concat();
         
         posts.push(Post {
             file_path,
-            frontmatter,
-            content: html,
+            frontmatter: matter,
+            content,
         })
     }
     
     posts.sort_by(|a, b| b.frontmatter.date.cmp(&a.frontmatter.date));
     posts
+}
+
+fn replace_tags(content: &str, template: String, matter: Frontmatter) -> String {
+    let html = template.replace("{title}", &matter.title)
+        .replace("{date}", &matter.date)
+        .replace("{description}", &matter.description)
+        .replace("{image}", &matter.image)
+        .replace("{tags}", &matter.tags)
+        .replace("{content}", &parse_markdown(&content));
+    
+    html
 }
 
 fn parse_markdown(content: &str) -> String {
