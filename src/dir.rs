@@ -9,8 +9,7 @@ pub fn create_site() {
     let posts = read_dir("./posts").expect("Couldn't read posts directory!");
     let posts = posts::generate_posts(posts, template);
     
-    write_html(posts)
-    write_links(posts);
+    write_html(posts);
 }
 
 fn duplicate_template() -> String {
@@ -32,6 +31,12 @@ fn write_html(posts: Vec<Post>) {
         
         fs::write(post_path, post.html).expect("Couldn't write post to file!");
     }
+    
+    let link_list = get_links(posts);
+    let index_template = fs::read_to_string("./site/index.html").expect("Couldn't read index file!");
+    
+    let index = index_template.replace("{links}", &link_list);
+    fs::write("./site/index.html", index);
 }
 
 fn get_links(posts: Vec<Post>) -> String {
@@ -53,9 +58,5 @@ fn get_links(posts: Vec<Post>) -> String {
         link_list.push('\n');
     }
     
-    // The full list of link snippets is written to the specified link list file
-    let index = fs::read_to_string("./site/index.html").expect("Couldn't read index!");
-    
-    let index_updated = index.replace("{links}", &link_list);
-    fs::write("./site/index.html", &index_updated).expect("Failed to write to index.");
+    link_list
 }
