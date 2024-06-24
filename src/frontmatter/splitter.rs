@@ -5,10 +5,13 @@ pub fn split_post(file: String) -> (String, String) {
     let lines: Vec<&str> = file.lines().collect();
     let mut in_matter = false;
     
+    // Checks if first line is a frontmatter delimiter
     if &lines[0] == &"---" {
         in_matter = true;
     }
     
+    // Until the next frontmatter delimiter is found, copy lines to matter
+    // Else, copy lines to content
     for line in &lines[1..] {
         if in_matter && line == &"---" {
             in_matter = false;
