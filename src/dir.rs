@@ -22,18 +22,18 @@ fn duplicate_template() -> String {
     posts_template
 }
 
-fn parse_frontmatter(template: String) {
+fn parse_frontmatter(template: String, file: String) {
     // Gets all frontmatter and content from a markdown file
-    // Removes the --- from frontmatter and parses the yaml
-    let (frontmatter, content) = ;
+    // Removes the --- from frontmatter and parses the yaml to a Frontmatter struct
+    let (matter, content) = frontmatter::parse(file);
     
     // Replaces all possible variables in html to the correct values
     // Stagnant uses a limited amount of variables, so this is the effective way
-    let html = template.replace("{title}", &frontmatter.title)
-        .replace("{date}", &frontmatter.date)
-        .replace("{description}", &frontmatter.description)
-        .replace("{image}", &frontmatter.image)
-        .replace("{tags}", &frontmatter.tags)
+    let html = template.replace("{title}", &matter.title)
+        .replace("{date}", &matter.date)
+        .replace("{description}", &matter.description)
+        .replace("{image}", &matter.image)
+        .replace("{tags}", &matter.tags)
         .replace("{content}", &parse_markdown(&content));
 }
 
