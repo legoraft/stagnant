@@ -25,8 +25,8 @@ article * {
     color: var(--primary-text);
 }
 
-article ul, article li {
-    list-style-position: inside;
+article ul, article ol {
+    margin: 0 0 0 1rem;
 }
 
 article a {
